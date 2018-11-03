@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-
+import {addModel} from './actions/addModel'
+import { connect } from 'react-redux'
+import {Provider} from 'react-redux'
+import store from './store'
 
 const data = {
   "Ivel Z3": {
@@ -43,6 +46,7 @@ updateSelection(event) {
 
   render() {
     return (
+      <Provider store={store}>
       <div className="App">
 
           <select value={this.state.value} onChange={this.updateSelection}>
@@ -54,10 +58,18 @@ updateSelection(event) {
           {insideSelect}
         </select>
 
-
+      <button onCLick={this.propos.addModel}> Add </button>
       </div>
+      </Provider>
+
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    state: state
+  }
+}
+
+export default connect(null, { addModel})(App)
