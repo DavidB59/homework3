@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import {addModel} from './actions/addModel'
+import {modelName} from './actions/modelName'
+
 import { connect } from 'react-redux'
 import {Provider} from 'react-redux'
 import store from './store'
+import ModelDetails from './components/ModelDetails'
+
+
 
 const data = {
   "Ivel Z3": {
@@ -28,37 +33,41 @@ const data = {
   }
 }
 const dataKeys = Object.keys(data)
-const insideSelect = dataKeys.map((dataKey) => <option key={data[dataKey].year} value={dataKey}> {dataKey} ({data[dataKey].year})</option>)
+const insideSelect = dataKeys.map((dataKey) => <option key={Math.ceil(Math.random()*100)} value={dataKey}> {dataKey} ({data[dataKey].year})</option>)
 
 class App extends Component {
+  
   constructor(props) {
     super(props);
-    this.state = {value: 'coconut'};
-
+    this.state = {value: ''};
+    this.functionAddModel = this.functionAddModel.bind(this);
     this.updateSelection = this.updateSelection.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 updateSelection(event) {
   this.setState({value: event.target.value});
+}
+functionAddModel(){
+  this.props.modelName(this.state.value)
+  this.props.addModel(data[this.state.value])
+  console.log('props')
+  console.log(this.props)
+  console.log('state')
   console.log(this.state)
 }
-
   render() {
     return (
       <Provider store={store}>
       <div className="App">
+    <ModelDetails model={this.props.model} name={this.props.name}/> 
 
           <select value={this.state.value} onChange={this.updateSelection}>
           <option value="">-- pick a model --</option>
-          <option value="re">-- raeredel --</option>
-
-          <option value="rea">-- pickrezrzeodel --</option>
-
           {insideSelect}
         </select>
 
-      <button onCLick={this.propos.addModel}> Add </button>
+      <button onClick={this.functionAddModel}> Add </button>
+
       </div>
       </Provider>
 
@@ -68,8 +77,9 @@ updateSelection(event) {
 
 const mapStateToProps = (state) => {
   return {
-    state: state
+    model: state.addModel,
+    name : state.modelName,
   }
 }
 
-export default connect(null, { addModel})(App)
+export default connect(mapStateToProps,{addModel, modelName})(App)

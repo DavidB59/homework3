@@ -1,7 +1,7 @@
 
 import { combineReducers } from 'redux'
 import addModel from './addModel'
-import modelName from './modelName'
+import modelName from '../reducers/modelName'
 
 
 export default combineReducers({
